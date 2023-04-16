@@ -1,8 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const cors = require("cors");
-const mongoose = require("mongoose");
-require('dotenv').config();
+const connectDatabase = require("./database/connection");
+
 
 const app = express();
 
@@ -12,15 +12,12 @@ app.use(cors());
 app.use(express.urlencoded({
   extended: true
 }));
-var url = process.env.MongoURL;
-
-mongoose
-  .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.log(err));
-
 
 const port = 3000;
+
+connectDatabase();
+
+
 
 const users = [];
 
