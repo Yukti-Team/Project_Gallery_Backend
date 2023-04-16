@@ -2,8 +2,6 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const cors = require("cors");
 const connectDatabase = require("./database/connection");
-
-
 const app = express();
 
 app.use(express.json());
