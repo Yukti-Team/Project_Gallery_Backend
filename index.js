@@ -1,7 +1,10 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+
 const cors = require("cors");
 const connectDatabase = require("./database/connection");
+
 
 
 const UserSc = require('./schema/user_schema');
@@ -20,21 +23,20 @@ const port = 3000;
 
 connectDatabase();
 
-
-
-const users = [];
-
-app.get("/users", (req, res) => {
-  res.status(200).send(users);
-})
-
-
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", async function () {
   await db.collection("users").createIndex({ username: 1, email: 1 }, { unique: true });
 });
+
+
+app.get("/users", async (req, res) => {
+  let data = await UserSc.find();
+
+  res.status(200).send(data);
+})
+
 
 app.post("/user/signup", async (req, res) => {
   try {
