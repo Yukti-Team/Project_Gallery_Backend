@@ -1,16 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const mongoose = require("mongoose");
-
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const connectDatabase = require("./database/connection");
-
-
-
-
 const UserSc = require('./schema/user_schema');
 
 const app = express();
+
+const projectRouter = require("./Routers/projectRouter");
 
 app.use(express.json());
 app.use(cors());
@@ -18,6 +16,7 @@ app.use(cors());
 app.use(express.urlencoded({
   extended: true
 }));
+app.use(bodyParser.json());
 
 const port = 3000;
 
@@ -106,6 +105,14 @@ app.post("/user/login", async (req, res) => {
 app.get('/test', (req, res) => {
   res.send('Successfully tested!');
 });
+
+
+
+
+app.use("/project",projectRouter);
+
+
+
 
 app.listen(port, () => {
 
