@@ -7,6 +7,7 @@ Router.route("/login").post(login);
 Router.route("/:id").get(getUser);
 Router.route("/update/:id").patch(updateUser);
 
+
 //changepwd, updateprofile, getuserdata 
 
 module.exports = Router;
