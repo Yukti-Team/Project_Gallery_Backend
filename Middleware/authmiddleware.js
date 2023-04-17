@@ -1,6 +1,5 @@
 const user_schema = require('../schema/user_schema');
 
-
 exports.isAuthenticated = async (req, res , next) =>{
     try {
          

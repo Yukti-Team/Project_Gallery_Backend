@@ -12,7 +12,7 @@ const projectRouter = require("./Routers/projectRouter");
 
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const port = 3000;
@@ -32,21 +32,15 @@ app.get("/users", async (req, res) => {
   res.status(200).send(data);
 })
 
-
-
-
 app.get('/test', (req, res) => {
-  res.send('Successfully tested!');
+  res.status(200).send({
+    "status code": res.statusCode,
+    "message": 'Successfully tested!'
+  });
 });
 
-
-
-
-app.use("/project",projectRouter);
-app.use("/user",userRouter );
-
-
-
+app.use("/project", projectRouter);
+app.use("/user", userRouter);
 
 app.listen(port, () => {
 
