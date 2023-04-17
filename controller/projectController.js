@@ -24,8 +24,6 @@ exports.createProject = async (req, res)=> {
             message:" Something went wrong "
         })
     }
-
-
-
-    
 }
+
+
