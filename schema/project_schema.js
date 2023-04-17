@@ -6,6 +6,10 @@ const projectSchema = new mongoose.Schema({
         required: true
     },
     pimage: {
+        type: [String],
+        required: true
+    },
+    plogo: {
         type: String,
         required: true
     },
@@ -13,15 +17,11 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tags: {
-        type: [String],
-        required: true
-    },
     stack: {
         type: [String],
         required: true
     },
-    GitHub: {
+    gitHub: {
         type: String,
         required: true
     },
@@ -42,6 +42,26 @@ const projectSchema = new mongoose.Schema({
     },
     groupArray: {
         type: [String]
+    },
+    branch: {
+        type: String,
+        required: true
+    },
+    domain: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true
+    },
+    rating: {
+        type: Number,
+        default: 1
     }
 });
 

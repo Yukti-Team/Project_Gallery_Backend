@@ -26,11 +26,7 @@ db.once("open", async function () {
 });
 
 
-app.get("/users", async (req, res) => {
-  let data = await UserSc.find();
 
-  res.status(200).send(data);
-})
 
 app.get('/test', (req, res) => {
   res.status(200).send({
