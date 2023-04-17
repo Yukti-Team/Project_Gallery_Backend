@@ -1,8 +1,8 @@
-const projectSc = require("../schema/project_schema")
+const projectSc = require("../schema/project_schema");
+const user_schema = require("../schema/user_schema");
 
 exports.createProject = async (req, res) => {
     const { pname, pimage, pdesc, tags, stack, GitHub, pUrl, ownerId, isPrivate, isGroup, groupArray } = req.body;
-
     try {
         let project = await projectSc.create({ pname, pimage, pdesc, tags, stack, GitHub, pUrl, ownerId, isPrivate, isGroup, groupArray });
         console.log(project);
@@ -81,8 +81,80 @@ exports.getProject = async (req, res) => {
         }
 
     }
-
 }
 
+
+exports.filterProject = async (req, res) => {
+    const filterTag = {};
+    try {
+        switch (Object.keys(req.query)[0]) {
+            case "pname": {
+                if (req.query.pname)
+                    filterTag["pname"] = req.query.pname;
+
+                // res.send(req.query.branch);
+            }
+            case "branch": {
+                if (req.query.branch)
+                    filterTag["branch"] = req.query.branch;
+
+                // res.send(req.query.branch);
+            }
+            case "domain": {
+                if (req.query.domain)
+                    filterTag["domain"] = req.query.domain;
+
+                // res.send(req.query.domain);
+            }
+            case "stack":
+                if (req.query.stack) {
+
+                    const stack = req.query.stack.split(',');
+                    filterTag["stack"] = stack;
+
+                    // res.send(req.query.status);
+                }
+            case "rating":
+                if (req.query.rating) {
+                    var rating = req.query.rating;
+                    filterTag["pname"] = rating;
+
+                    // res.send(req.query.rating);
+                }
+
+            case "year":
+                if (req.query.year) {
+                    filterTag["year"] = req.query.year;
+                }
+
+            case "status":
+                if (req.query.isGroup) {
+                    filterTag["status"] = req.query.status;
+                }
+
+            case "username":
+                if (req.query.username) {
+                    console.log(req.query.username);
+                    const username = req.query.username;
+                    var user = await user_schema.findOne({ username });
+                    const ownerId = user._id.toString();
+                    console.log(ownerId);
+                    filterTag["ownerId"] = ownerId;
+                }
+
+        }
+        console.log(filterTag);
+        projectSc.find(filterTag).then((docs) => {
+            res.status(200).send(docs);
+
+        }).catch((err) => {
+            console.log(err);
+        });
+
+    } catch (error) {
+        res.status(400)
+            .send(error)
+    }
+}
 
 
