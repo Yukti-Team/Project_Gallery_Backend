@@ -1,13 +1,14 @@
 const projectSc = require("../schema/project_schema")
 
+
 exports.createProject = async (req, res)=> {
     const {pname, pimage, pdesc, tags, stack, GitHub, pUrl, ownerId, isPrivate, isGroup, groupArray} = req.body;
   
-    if(!pname|| !pimage||!pdesc ||!tags|| !stack|| !GitHub|| !pUrl|| !ownerId ||!isPrivate|| !isGroup || !groupArray ){
+    if(!pname || !pimage||!pdesc ||!tags|| !stack|| !GitHub|| !pUrl|| !ownerId ||!isPrivate|| !isGroup || !groupArray ){
         return res.status(300).json({
             message: "Some fields are missing"
         })
-    }
+    }      
     try
     {
         let project = await projectSc.create({ pname, pimage, pdesc, tags, stack, GitHub, pUrl, ownerId, isPrivate, isGroup, groupArray});
@@ -25,5 +26,6 @@ exports.createProject = async (req, res)=> {
         })
     }
 }
+
 
 

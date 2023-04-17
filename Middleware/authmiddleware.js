@@ -2,7 +2,8 @@ const user_schema = require('../schema/user_schema');
 
 
 exports.isAuthenticated = async (req, res , next) =>{
-    try{
+    try {
+         
         let id= req.headers.id;
         if(!id)
         {
