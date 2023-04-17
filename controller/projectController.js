@@ -2,9 +2,44 @@ const projectSc = require("../schema/project_schema");
 const user_schema = require("../schema/user_schema");
 
 exports.createProject = async (req, res) => {
-    const { pname, pimage, pdesc, tags, stack, GitHub, pUrl, ownerId, isPrivate, isGroup, groupArray } = req.body;
+    const {
+        pname,
+        pimage,
+        plogo,
+        pdesc,
+        stack,
+        gitHub,
+        pUrl,
+        ownerId,
+        isPrivate,
+        isGroup,
+        groupArray,
+        branch,
+        domain,
+        year,
+        status,
+        rating
+    } = req.body;
     try {
-        let project = await projectSc.create({ pname, pimage, pdesc, tags, stack, GitHub, pUrl, ownerId, isPrivate, isGroup, groupArray });
+        let project = await projectSc.create({
+            pname,
+            pimage,
+            plogo,
+            pdesc,
+            stack,
+            gitHub,
+            pUrl,
+            ownerId,
+            isPrivate,
+            isGroup,
+            groupArray,
+            branch,
+            domain,
+            year,
+            status,
+            rating
+        }
+        );
         console.log(project);
         res.status(200).json({
             message: "Successfully created project",
