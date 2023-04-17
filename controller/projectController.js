@@ -2,9 +2,9 @@ const projectSc = require("../schema/project_schema");
 const user_schema = require("../schema/user_schema");
 
 exports.createProject = async (req, res) => {
-    const { pname, pimage, pdesc, tags, stack, GitHub, pUrl, ownerId, isPrivate, isGroup, groupArray } = req.body;
+    const { pname, pimage, plogo, pdesc, stack, gitHub, pUrl, ownerId, isPrivate, isGroup, groupArray, branch, domain, year, status, rating } = req.body;
     try {
-        let project = await projectSc.create({ pname, pimage, pdesc, tags, stack, GitHub, pUrl, ownerId, isPrivate, isGroup, groupArray });
+        let project = await projectSc.create({ pname, pimage, plogo, pdesc, stack, gitHub, pUrl, ownerId, isPrivate, isGroup, groupArray, branch, domain, year, status, rating });
         console.log(project);
         res.status(200).json({
             message: "Successfully created project",
@@ -23,18 +23,28 @@ exports.createProject = async (req, res) => {
 exports.deleteProject = async (req, res) => {
     let id = req.params.id;
 
-    try {
-        const data = await projectSc.findByIdAndDelete(id);
-        res.json({
-            "status_code": 204,
-            "status": `Deleted the project ${data.pname} with id ${data.id} from db`,
-        });
+    if(id === "all")
+    {
+     const data=await   projectSc.deleteMany({});
+     res.status(200).send({
+        data
+     });
     }
-    catch (error) {
-        console.log(error);
-        res.status(404).json({
-            message: "Not found "
-        })
+    else{
+
+        try {
+            const data = await projectSc.findByIdAndDelete(id);
+            res.json({
+                "status_code": 204,
+                "status": `Deleted the project ${data.pname} with id ${data.id} from db`,
+            });
+        }
+        catch (error) {
+            console.log(error);
+            res.status(404).json({
+                message: "Not found "
+            })
+        }
     }
 }
 
