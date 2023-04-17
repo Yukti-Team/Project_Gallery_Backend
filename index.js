@@ -5,8 +5,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const connectDatabase = require("./database/connection");
 
-
-
 const UserSc = require('./schema/user_schema');
 
 
