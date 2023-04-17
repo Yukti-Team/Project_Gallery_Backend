@@ -48,7 +48,7 @@ exports.login = async (req, res) => {
         "message": "Invalid email or password"
       })
     }
-    try {
+    try { 
       if (await bcrypt.compare(password, user.password)) {
         res.status(200).send(user);
       } else {
