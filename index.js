@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const port = 3000;
+const port = 5000;
 
 connectDatabase();
 

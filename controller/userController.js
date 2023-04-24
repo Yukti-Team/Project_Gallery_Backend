@@ -14,7 +14,13 @@ exports.signUp = async (req, res) => {
 
     try {
       let dataToStore = await userSc.create(user);
+      //deleting password from data for security
+      dataToStore = dataToStore.toObject();
+      delete dataToStore.password;
+      console.log(dataToStore);
       res.status(200).json(dataToStore);
+
+      
     } catch (error) {
       if (error.code === 11000) {
         res.status(400).json({
@@ -42,24 +48,29 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
 
-  const user = await userSc.findOne({ email });
-  if (user == null) {
-    res.status(400).send({
-      "message": "Invalid email or password"
-    })
-  }
-  try {
-    if (await bcrypt.compare(password, user.password)) {
-      res.status(200).send(user);
-    } else {
-      res.send("Not allowed");
+    const user = await userSc.findOne({ email });
+    if (user == null) {
+      res.status(400).send({
+        "message": "Invalid email or password"
+      })
     }
-
-  } catch (error) {
-    res.status(500).send({
-      "message": "Something went wrong..."
-    })
-  }
+    try {
+      if (await bcrypt.compare(password, user.password)) {
+        //i want to remove this passwrod field from user object before sending it to frontend
+        const userObject = user.toObject();
+        delete userObject.password;
+        console.log(userObject);
+        res.status(200).send(userObject);
+      } else {
+        res.send("Not allowed");
+      }
+  
+    } catch (error) {
+      res.status(500).send({
+        "message": "Something went wrong..."
+      })
+    }
+  
 }
 
 exports.getUser = async (req, res) => {
