@@ -5,9 +5,8 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    pimage: {
+    pimages: {
         type: [String],
-        required: true
     },
     plogo: {
         type: String,
@@ -17,11 +16,11 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    stack: {
+    tags: {
         type: [String],
         required: true
     },
-    gitHub: {
+    gitHubLink: {
         type: String,
         required: true
     },
@@ -33,10 +32,6 @@ const projectSchema = new mongoose.Schema({
         required: true
     },
     isPrivate: {
-        type: Boolean,
-        default: false
-    },
-    isGroup: {
         type: Boolean,
         default: false
     },
@@ -62,6 +57,18 @@ const projectSchema = new mongoose.Schema({
     rating: {
         type: Number,
         default: 1
+    },
+    sponsor: {
+        type: String,
+    },
+    sponsorEmail: {
+        type: String,
+    },
+    guide: {
+        type: String,
+    },
+    guideEmail: {
+        type: String,
     }
 });
 
