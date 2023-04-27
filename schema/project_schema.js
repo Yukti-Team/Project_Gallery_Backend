@@ -22,7 +22,6 @@ const projectSchema = new mongoose.Schema({
     },
     gitHubLink: {
         type: String,
-        required: true
     },
     pUrl: {
         type: String
@@ -66,9 +65,15 @@ const projectSchema = new mongoose.Schema({
     },
     guide: {
         type: String,
+        required: true
     },
     guideEmail: {
         type: String,
+        required: true
+    },
+    createdAt: {
+        type: String,
+        required: true
     }
 });
 
