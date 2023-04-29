@@ -19,15 +19,10 @@ exports.signUp = async (req, res) => {
   try {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-    const user = {
-      username: req.body.username,
-      email: req.body.email,
-      password: hashedPassword,
-    };
+    req.body.password = hashedPassword;
 
     try {
-      let dataToStore = await userSc.create(user);
+      let dataToStore = await userSc.create(req.body);
       dataToStore = dataToStore.toObject();
       delete dataToStore.password;
       console.log(dataToStore);
@@ -72,7 +67,7 @@ exports.login = async (req, res) => {
     });
   }
   try {
-    const user = (user1 === null) ? user2 : user1; 
+    const user = (user1 === null) ? user2 : user1;
 
     console.log(user);
 
