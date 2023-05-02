@@ -1,5 +1,10 @@
 const userSc = require("../schema/user_schema");
 const bcrypt = require('bcrypt');
+const Jwt = require("jsonwebtoken");
+
+require('dotenv').config();
+
+const jwtKey = process.env.JWTSecret;
 
 // Route for checking if username is unique
 exports.checkUserName = async (req, res) => {
@@ -24,14 +29,16 @@ exports.signUp = async (req, res) => {
     try {
       let dataToStore = await userSc.create(req.body);
       dataToStore = dataToStore.toObject();
+
       delete dataToStore.password;
-      console.log(dataToStore);
-      res.status(200).json({
-        statusCode: 200,
-        user: dataToStore
-      });
 
-
+      Jwt.sign({ dataToStore }, jwtKey, (err, token) => {
+        res.status(200).json({
+          statusCode: 200,
+          token,
+          user: dataToStore,
+        });
+      })
     } catch (error) {
       if (error.code === 11000) {
         res.status(401).json({
@@ -74,11 +81,14 @@ exports.login = async (req, res) => {
     if (await bcrypt.compare(password, user.password)) {
       const userObject = user.toObject();
       delete userObject.password;
-      console.log(userObject);
-      return res.status(200).send({
-        user: userObject,
-        statusCode: 200,
-      });
+
+      Jwt.sign({ userObject }, jwtKey, (err, token) => {
+        return res.status(200).send({
+          statusCode: 200,
+          token,
+          user: userObject,
+        });
+      })
     } else {
       return res.status(401).send({
         statusCode: 401,
@@ -94,31 +104,19 @@ exports.login = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
+  let username = req.params.username;
 
-  let id = req.params.id;
-
-  if (id === "all") {
-    let data = await userSc.find();
-    res.status(200).json(data);
-  }
-  else {
-    let data = await userSc.findOne({ _id: id });
+  try {
+    let data = await userSc.findOne({ username: username });
     if (data == null) {
-      res.status(400).send({
-        "message": "Invalid id"
-      })
+      return res.status(400).send({ "message": "Invalid username" });
     }
-    try {
-      res.status(200).send(data);
-
-    } catch (error) {
-      res.status(500).send({
-        "message": "Something went wrong..."
-      })
-    }
-
+    res.status(200).send(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ "message": "Something went wrong..." });
   }
-}
+};
 
 exports.updateUser = async (req, res) => {
   // update api using patch

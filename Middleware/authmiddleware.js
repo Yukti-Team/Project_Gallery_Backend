@@ -1,29 +1,37 @@
-const user_schema = require('../schema/user_schema');
+const Jwt = require("jsonwebtoken");
 
-exports.isAuthenticated = async (req, res , next) =>{
+require('dotenv').config();
+
+const jwtKey = process.env.JWTSecret;
+
+exports.verifyToken = async (req, res, next) => {
     try {
-         
-        let id= req.headers.id;
-        if(!id)
-        {
-            res.status(401).json({
+        let token = req.headers['authorization'];
+
+        if (token) {
+            token = token.split(' ')[1];
+            // console.log(token); 
+
+            Jwt.verify(token, jwtKey, (err, valid) => {
+                if (err) {
+                    res.status(401).json({
+                        message: "Please provide valid token"
+                    })
+                } else {
+                    next();
+                }
+            })
+        } else {
+            res.status(403).json({
                 message: "Unauthorized User"
             })
         }
-        let user = await user_schema.findById({_id : id});
-        if(!user)
-        {
-            return res.status(404).json({
-                message: "User not found"
-            })
-        }
-        req.user = user;
-        next();
     }
-    catch(error)
-    {
+    catch (error) {
         return res.status(500).json({
-            message: "Something went wrong"
+            message: "Something went wrong",
+            error
         })
     }
 }
+

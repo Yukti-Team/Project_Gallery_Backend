@@ -26,7 +26,7 @@ const projectSchema = new mongoose.Schema({
     pUrl: {
         type: String
     },
-    ownerId: {
+    username: {
         type: String,
         required: true
     },
