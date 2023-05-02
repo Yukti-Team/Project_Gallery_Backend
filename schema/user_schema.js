@@ -9,6 +9,9 @@ let userSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
+    "imageUrl": {
+        type: String,
+    },
     "email": {
         required: true,
         type: String,
@@ -39,7 +42,7 @@ let userSchema = new mongoose.Schema({
     "branch": {
         type: String,
     },
-    "batch": {
+    "passoutYear": {
         type: String,
     },
     "totalProjects": {
