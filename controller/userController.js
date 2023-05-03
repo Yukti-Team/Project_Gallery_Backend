@@ -109,7 +109,10 @@ exports.getUser = async (req, res) => {
   try {
     let data = await userSc.findOne({ username: username });
     if (data == null) {
-      return res.status(400).send({ "message": "Invalid username" });
+      return res.status(400).send({
+        statusCode: 400,
+        message: "Invalid username"
+      });
     }
     res.status(200).send(data);
   } catch (error) {
